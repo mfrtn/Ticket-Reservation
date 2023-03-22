@@ -8,13 +8,78 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  phone     String   @unique
-  password  String
-  role      Role     @default(CLIENT)
+  id           String   @id @default(cuid())
+  fname        String
+  lname        String
+  phone        String   @unique
+  nationalCode String?
+  birthday     DateTime
+  password     String
+  avatarUrl    String?
+  role         Role     @default(CLIENT)
+  ballance     Float    @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  Orders       Order[]
+  Transactions Transaction[]
+}
+
+model Ticket {
+  id            String   @id @default(cuid())
+  fromLocation  String
+  toLocation    String
+  arrivalDate   DateTime
+  departureDate DateTime
+  unitPrice     Float
+  stock         Int
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  Orders TicketsOnOrders[]
+}
+
+model TicketsOnOrders {
+  ticketId String
+  orderId  String
+  count    Int
+
+  Ticket Ticket @relation(fields: [ticketId], references: [id])
+  Order  Order  @relation(fields: [orderId], references: [id])
+
+  @@id([ticketId, orderId])
+}
+
+model Order {
+  id          String @id @default(cuid())
+  userId      String
+  count       Int
+  totalPrice  Float
+  status      Status
+  description String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Tickets TicketsOnOrders[]
+  User    User              @relation(fields: [userId], references: [id])
+
+  Transaction Transaction?
+}
+
+model Transaction {
+  id          String  @id @default(cuid())
+  userId      String
+  amount      Float
+  cardNumber  String?
+  orderId     String? @unique
+  description String
+
+  createdAt DateTime @default(now())
+
+  User  User   @relation(fields: [userId], references: [id])
+  Order Order? @relation(fields: [orderId], references: [id])
 }
 
 enum Role {
@@ -23,3 +88,14 @@ enum Role {
   OPERATOR
   DEACTIVATED
 }
+
+enum Status {
+  PAID
+  CANCELLED
+  RESERVED
+}
+
+// User [1] <-> [Many] Transaction 
+// User [1] <-> [Many] Order 
+// Ticket [Many] <- [1] (TicketsOnOrders) [1] -> [Many] Order
+// Order? [1] <-> [1] Transaction? 

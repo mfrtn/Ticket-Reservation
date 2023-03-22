@@ -1,18 +1,28 @@
 import { Role, User } from "../database";
 
 type UserCreateI = {
-  name: string;
+  fname: string;
+  lname: string;
   phone: string;
+  nationalCode?: string;
+  birthday: Date;
   password: string;
+  avatarUrl?: string;
   role?: Role;
+  ballance?: number;
 };
 
 type UserOutputI = {
-  id: number;
-  name: string;
+  id: string;
+  fname: string;
+  lname: string;
   phone: string;
+  nationalCode?: string;
+  birthday: Date;
   // password: string;
-  role: Role;
+  avatarUrl?: string;
+  role?: Role;
+  ballance?: number;
   createdAt: Date;
   updatedAt: Date;
 };

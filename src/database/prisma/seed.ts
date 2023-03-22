@@ -1,24 +1,30 @@
 import { PrismaClient } from "@prisma/client";
-import { UserCreateI } from "../../interfaces/user.interface";
+import { UserI } from "../../interfaces";
 
 const prisma: PrismaClient = new PrismaClient();
 
-const users: UserCreateI[] = [
+const users: UserI.UserCreateI[] = [
   {
-    name: "ADMIN",
+    fname: "Mohammad",
+    lname: "Foroutan",
     phone: "09121001001",
+    birthday: new Date("1990-12-12"),
     password: "$2b$12$sut.VttuceVeq.vGKVI/VuPPdo8EccchK4w.Szd9bhxFtXQGcsgGa", //password
     role: "ADMIN",
   },
   {
-    name: "OPERATOR",
+    fname: "Amin",
+    lname: "operator",
     phone: "09121001002",
+    birthday: new Date("1992-01-17"),
     password: "$2b$12$sut.VttuceVeq.vGKVI/VuPPdo8EccchK4w.Szd9bhxFtXQGcsgGa", //password
     role: "OPERATOR",
   },
   {
-    name: "CLIENT",
+    fname: "Raha",
+    lname: "client",
     phone: "09121001003",
+    birthday: new Date("1996-05-03"),
     password: "$2b$12$sut.VttuceVeq.vGKVI/VuPPdo8EccchK4w.Szd9bhxFtXQGcsgGa", //password
     role: "CLIENT",
   },
