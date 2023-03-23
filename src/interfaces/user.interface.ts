@@ -9,7 +9,17 @@ type UserCreateI = {
   password: string;
   avatarUrl?: string;
   role?: Role;
-  ballance?: number;
+};
+
+type UserUpdateI = {
+  fname?: string;
+  lname?: string;
+  phone?: string;
+  nationalCode?: string;
+  birthday?: Date;
+  password?: string;
+  avatarUrl?: string;
+  role?: Role;
 };
 
 type UserOutputI = {
@@ -29,4 +39,4 @@ type UserOutputI = {
 
 interface UserI extends User {}
 
-export { UserCreateI, UserOutputI, UserI };
+export { UserCreateI, UserOutputI, UserUpdateI, UserI };

@@ -24,7 +24,15 @@ const authJWT = async (
 
       const user: UserI.UserOutputI = await userService.findByPhone(phone);
       // req.user = userDao.userInfoDao(user);
-      req.user = user;
+
+      if (user) {
+        req.user = user;
+      } else {
+        const error: ErrorI = new Error();
+        error.message = "Invalid token";
+        error.code = 400;
+        next(error);
+      }
 
       next();
     } catch (er) {
@@ -83,7 +91,7 @@ const self = (req: AuthI.AuthRequestI, res: Response, next: NextFunction) => {
     next();
   } else if (
     req.user.role === Role.CLIENT &&
-    Number(req.params.id) === req.user.id
+    (req.params.id === req.user.id || req.params.phone === req.user.phone)
   ) {
     next();
   } else {

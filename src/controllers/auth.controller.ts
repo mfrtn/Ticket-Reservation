@@ -9,11 +9,19 @@ class AuthController {
   private authService: AuthService;
   private userService: UserService;
 
-  private saltRounds = 12;
+  private static saltRounds = 12;
 
   constructor(authService: AuthService, userService: UserService) {
     this.authService = authService;
     this.userService = userService;
+  }
+
+  comparePasswrod(inputPass: string, userPass: string) {
+    return bcrypt.compareSync(inputPass, userPass);
+  }
+
+  static hashedPass(inputPass: string) {
+    return bcrypt.hashSync(inputPass, AuthController.saltRounds);
   }
 
   async login(
@@ -28,7 +36,7 @@ class AuthController {
         validCredential.phone
       );
       if (user) {
-        if (bcrypt.compareSync(validCredential.password, user.password)) {
+        if (this.comparePasswrod(validCredential.password, user.password)) {
           const token: string = JWT.sign(
             { phone: user.phone },
             process.env.SECRET_KEY,
@@ -64,18 +72,15 @@ class AuthController {
       );
 
       if (!oldUser) {
-        const hashedPassword = bcrypt.hashSync(
-          validUser.password,
-          this.saltRounds
-        );
+        const hashedPassword = AuthController.hashedPass(validUser.password);
 
         validUser.password = hashedPassword;
-        validUser.phone = validUser.phone;
+        validUser.birthday = new Date(validUser.birthday);
 
         const newUser = await this.authService.create(validUser);
         return res.status(201).json({
           id: newUser.id,
-          status: "succes",
+          status: "success",
         });
       } else {
         const error: ErrorI = new Error();

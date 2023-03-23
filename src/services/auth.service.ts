@@ -5,9 +5,30 @@ import { UserI } from "../interfaces";
 class AuthService {
   constructor() {}
 
+  createPermittedData(userObject: UserI.UserCreateI): any {
+    const result = {};
+
+    const permittedKeyChange = [
+      "fname",
+      "lname",
+      "phone",
+      "nationalCode",
+      "birthday",
+      "password",
+      "avatarUrl",
+    ];
+
+    for (const key of permittedKeyChange) {
+      if (userObject.hasOwnProperty(key)) {
+        result[key] = userObject[key];
+      }
+    }
+    return result;
+  }
+
   async create(userObject: UserI.UserCreateI): Promise<User> {
     return await db.user.create({
-      data: userObject,
+      data: this.createPermittedData(userObject),
     });
   }
 }
