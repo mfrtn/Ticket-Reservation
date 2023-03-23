@@ -1,4 +1,5 @@
 import { Response, NextFunction } from "express";
+import * as fs from "fs";
 import { UserService } from "../services";
 import { AuthI, ErrorI, UserI } from "../interfaces";
 import AuthController from "./auth.controller";
@@ -68,6 +69,7 @@ class UserController {
   async update(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
     const id: string = req.params.id;
     const inputFileds: UserI.UserUpdateI = req.body;
+
     if (req.user.role !== Role.ADMIN) {
       delete inputFileds.role;
     }
@@ -81,6 +83,39 @@ class UserController {
     try {
       const user = await this.userService.update(id, inputFileds);
       return res.json(user);
+    } catch (error) {
+      error.code = 400;
+      error.message = "Invalid Request!";
+      next(error);
+    }
+  }
+
+  async upload(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
+    try {
+      const file = req.file;
+      if (file) {
+        if (file.mimetype.includes("image")) {
+          try {
+            fs.unlinkSync(global.__basedir + req.user.avatarUrl);
+          } catch (error) {}
+
+          await this.userService.updateAvatar(req.user.id, file.filename);
+          return res.status(201).json({
+            file: file.path,
+            status: "success",
+          });
+        } else {
+          const error: ErrorI = new Error();
+          error.code = 400;
+          error.message = "Invalid Image";
+          next(error);
+        }
+      } else {
+        const error: ErrorI = new Error();
+        error.code = 400;
+        error.message = "Put Image File In Header";
+        next(error);
+      }
     } catch (error) {
       error.code = 400;
       error.message = "Invalid Request!";

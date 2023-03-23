@@ -1,10 +1,12 @@
 import { Router, Request, Response, NextFunction } from "express";
+import * as multer from "multer";
 import { UserService } from "../services";
 import { UserController } from "../controllers";
 import { auth } from "../middlewares";
 import { AuthI } from "../interfaces";
 
 const router = Router();
+const upload = multer({ dest: "./public/images" });
 
 const userController = new UserController(new UserService());
 
@@ -32,6 +34,12 @@ router.patch(
   auth.self,
   (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
     userController.update(req, res, next)
+);
+router.post(
+  "/upload",
+  upload.single("avatar"),
+  (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
+    userController.upload(req, res, next)
 );
 router.head(
   "/phone/:phone",

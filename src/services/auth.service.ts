@@ -15,7 +15,6 @@ class AuthService {
       "nationalCode",
       "birthday",
       "password",
-      "avatarUrl",
     ];
 
     for (const key of permittedKeyChange) {

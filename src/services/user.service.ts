@@ -14,7 +14,6 @@ class UserService {
       "nationalCode",
       "birthday",
       "password",
-      "avatarUrl",
       "role",
     ];
 
@@ -27,7 +26,11 @@ class UserService {
   }
 
   async all(): Promise<User[]> {
-    return await db.user.findMany();
+    return await db.user.findMany({
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
   }
 
   async find(id: string): Promise<User> {
@@ -59,6 +62,17 @@ class UserService {
     return await db.user.delete({
       where: {
         id,
+      },
+    });
+  }
+
+  async updateAvatar(id: string, avatarUrl: string): Promise<User> {
+    return await db.user.update({
+      where: {
+        id,
+      },
+      data: {
+        avatarUrl,
       },
     });
   }

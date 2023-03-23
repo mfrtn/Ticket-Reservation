@@ -8,11 +8,11 @@
 
 #### **TODO**
 
-- [ ] **User CRUD**
+- [x] **User CRUD**
 - - [x] Check User exists by Phone
 - - [x] Delete a User By ID
 - - [x] Update a User Profile By ID
-- - [ ] Upload Avatar
+- - [x] Upload Avatar
 - [x] **Authorization**
 - [x] **Authentication**
 - [ ] **Order CRUD**
@@ -21,3 +21,4 @@
 - - [ ] Increase Wallet Balance
 - - [ ] Get Wallet Balance
 - [ ] Refresh Token mechanism API ?!?!
+- [ ] **Routes Request Validations**
