@@ -24,24 +24,24 @@ class AuthController {
     return bcrypt.hashSync(inputPass, AuthController.saltRounds);
   }
 
+  newToken(phone: string): string {
+    return JWT.sign({ phone }, process.env.SECRET_KEY, {
+      expiresIn: Number(process.env.TOKEN_EXPIRE_TIME),
+    });
+  }
   async login(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response> {
-    const validCredential: AuthI.login = req.body;
-
     try {
+      const validCredential: AuthI.login = req.body;
       const user: UserI.UserI = await this.userService.findByPhone(
         validCredential.phone
       );
       if (user) {
         if (this.comparePasswrod(validCredential.password, user.password)) {
-          const token: string = JWT.sign(
-            { phone: user.phone },
-            process.env.SECRET_KEY,
-            { expiresIn: Number(process.env.TOKEN_EXPIRE_TIME) }
-          );
+          const token: string = this.newToken(user.phone);
           return res.status(202).json({
             token,
           });
@@ -88,6 +88,24 @@ class AuthController {
         error.code = 406;
         next(error);
       }
+    } catch (er) {
+      const error: ErrorI = new Error();
+      error.message = "Invalid Request";
+      error.code = 400;
+      next(error);
+    }
+  }
+
+  async refreshToken(
+    req: AuthI.AuthRequestI,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> {
+    try {
+      const token: string = this.newToken(req.user.phone);
+      return res.status(202).json({
+        token,
+      });
     } catch (er) {
       const error: ErrorI = new Error();
       error.message = "Invalid Request";

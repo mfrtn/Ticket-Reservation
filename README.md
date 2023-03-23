@@ -15,10 +15,11 @@
 - - [x] Upload Avatar
 - [x] **Authorization**
 - [x] **Authentication**
+- [ ] **Ticket CRUD**
 - [ ] **Order CRUD**
-- - [ ] Get All User Order //Which User??!?!?
+- - [ ] Get All User Order By ID
 - [ ] **Wallet CRUD**
 - - [ ] Increase Wallet Balance
 - - [ ] Get Wallet Balance
-- [ ] Refresh Token mechanism API ?!?!
+- [x] Refresh Token mechanism API
 - [ ] **Routes Request Validations**
