@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-import { ErrorI } from "../interfaces/";
+import { ErrorI } from "../interfaces";
 
 const errorHandler = (
   error: ErrorI,

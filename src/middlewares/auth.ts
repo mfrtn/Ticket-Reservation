@@ -1,7 +1,7 @@
 import { Response, NextFunction, request } from "express";
 import * as JWT from "jsonwebtoken";
 
-import { UserI, AuthI, ErrorI } from "../interfaces/";
+import { UserI, AuthI, ErrorI } from "../interfaces";
 import { UserService } from "../services";
 import { Role } from "../database";
 

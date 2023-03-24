@@ -19,7 +19,7 @@
 - [ ] **Order CRUD**
 - - [ ] Get All User Order By ID
 - [ ] **Wallet CRUD**
-- - [ ] Increase Wallet Balance
+- - [x] Increase Wallet Balance
 - - [ ] Get Wallet Balance
 - [x] Refresh Token mechanism API
 - [ ] **Routes Request Validations**

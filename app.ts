@@ -1,4 +1,4 @@
-import { ExpressLoader } from "./src/loaders/";
+import { ExpressLoader } from "./src/loaders";
 import { db } from "./src/database";
 
 global.__basedir = process.cwd() + "/public/images/";

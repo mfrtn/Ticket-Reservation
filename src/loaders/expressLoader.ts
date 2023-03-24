@@ -1,10 +1,8 @@
 import * as express from "express";
 
-import Config from "../config";
+import config from "../config";
 import apiRouter from "../routes";
 import { errorHandler } from "../middlewares";
-
-const config = new Config();
 
 const router = express.Router();
 
