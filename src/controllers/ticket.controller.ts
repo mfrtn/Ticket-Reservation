@@ -2,7 +2,13 @@ import { Response, NextFunction } from "express";
 import { createClient } from "redis";
 
 import { TicketService } from "../services";
-import { AuthI, ErrorI, TicketQueryI, Ticket } from "../interfaces";
+import {
+  AuthI,
+  ErrorI,
+  TicketQueryI,
+  Ticket,
+  TicketFilterI,
+} from "../interfaces";
 import config from "../config";
 
 class TicketController {
@@ -22,7 +28,7 @@ class TicketController {
     for (const key of permittedKeyChange) {
       if (queryObject.hasOwnProperty(key)) {
         if (key === "arrival" || key === "departure") {
-          result[key] = new Date(queryObject[key]).toDateString();
+          result[key] = new Date(queryObject[key]).toString();
           continue;
         }
         result[key] = queryObject[key];
@@ -30,7 +36,6 @@ class TicketController {
         result[key] = "";
       }
     }
-    console.log(result);
 
     return result;
   }
@@ -175,6 +180,7 @@ class TicketController {
       await client.connect();
       const filterObject: TicketQueryI = await client.hGetAll(queryId);
       await client.disconnect();
+      const newFilterObject: TicketFilterI = {};
 
       if (Object.keys(filterObject).length === 0) {
         const error: ErrorI = new Error();
@@ -182,15 +188,23 @@ class TicketController {
         error.code = 404;
         return next(error);
       }
+
+      newFilterObject["fromLocation"] = filterObject.from;
+      newFilterObject["toLocation"] = filterObject.to;
+
       if (!Date.parse(filterObject.departure)) {
         delete filterObject.departure;
+      } else {
+        newFilterObject["departureDate"] = new Date(filterObject.departure);
       }
 
       if (!Date.parse(filterObject.arrival)) {
         delete filterObject.arrival;
+      } else {
+        newFilterObject["arrivalDate"] = new Date(filterObject.arrival);
       }
 
-      const tickets = await this.ticketService.filter(filterObject);
+      const tickets = await this.ticketService.filter(newFilterObject);
 
       return res.json({
         tickets,

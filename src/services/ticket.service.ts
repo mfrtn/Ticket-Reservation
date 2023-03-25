@@ -1,5 +1,5 @@
 import { db } from "../database";
-import { Ticket, TicketQueryI } from "../interfaces";
+import { Ticket, TicketQueryI, TicketFilterI } from "../interfaces";
 
 class TicketService {
   constructor() {}
@@ -63,16 +63,18 @@ class TicketService {
     });
   }
 
-  async filter(filterObject: TicketQueryI): Promise<Ticket[]> {
+  async filter(filterObject: TicketFilterI): Promise<Ticket[]> {
     return await db.ticket.findMany({
       where: {
-        arrivalDate: filterObject.arrival,
-        departureDate: filterObject.departure,
+        arrivalDate: filterObject.arrivalDate,
+        departureDate: filterObject.departureDate,
         fromLocation: {
-          contains: filterObject.from,
+          contains: filterObject.fromLocation,
+          mode: "insensitive",
         },
         toLocation: {
-          contains: filterObject.to,
+          contains: filterObject.toLocation,
+          mode: "insensitive",
         },
       },
     });

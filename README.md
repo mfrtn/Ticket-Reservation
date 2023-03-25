@@ -29,7 +29,7 @@
 - - [x] Remove many Tickets by IDs (admin only)
 - - [x] Create a Query for filtering Tickets(on Redis)
 - - [x] Get Tickets by Query ID
-- - - [ ] Fix No DateTime Query Bug
+- - - [x] Fix No DateTime Query Bug
 - - [ ] Return a HTML Ticket by ID
 - [ ] **Order CRUD**
 - - [ ] Get All User Order by ID

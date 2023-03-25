@@ -7,4 +7,11 @@ interface TicketQueryI {
   departure?: string;
 }
 
-export { TicketQueryI, Ticket };
+interface TicketFilterI {
+  fromLocation?: string;
+  toLocation?: string;
+  arrivalDate?: Date;
+  departureDate?: Date;
+}
+
+export { TicketQueryI, Ticket, TicketFilterI };
