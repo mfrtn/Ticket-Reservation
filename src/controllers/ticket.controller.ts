@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { TicketService } from "../services";
-import { AuthI, ErrorI, UserI } from "../interfaces";
+import { AuthI, ErrorI } from "../interfaces";
 import { Ticket } from "@prisma/client";
 
 class TicketController {
@@ -16,9 +16,9 @@ class TicketController {
         const tickets = await this.ticketService.all();
         return res.json(tickets).end();
       } else {
-        const user = await this.ticketService.find(id);
-        if (user) {
-          return res.json(user).end();
+        const ticket = await this.ticketService.find(id);
+        if (ticket) {
+          return res.json(ticket).end();
         }
       }
       const error: ErrorI = new Error();
@@ -42,6 +42,39 @@ class TicketController {
       return res.json(newTicket);
     } catch (error) {
       error.code = 500;
+      next(error);
+    }
+  }
+
+  async update(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
+    const id: string = req.params.id;
+    const inputFileds: Ticket = req.body;
+
+    if (inputFileds.arrivalDate) {
+      inputFileds.arrivalDate = new Date(inputFileds.arrivalDate);
+    }
+    if (inputFileds.departureDate) {
+      inputFileds.departureDate = new Date(inputFileds.departureDate);
+    }
+
+    try {
+      const ticket = await this.ticketService.update(id, inputFileds);
+      return res.json(ticket);
+    } catch (error) {
+      error.code = 400;
+      next(error);
+    }
+  }
+
+  async destroy(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
+    const id: string = req.params.id;
+
+    try {
+      const ticket = await this.ticketService.destroy(id);
+      res.sendStatus(204);
+    } catch (error) {
+      error.code = 404;
+      error.message = "Ticket Not Found";
       next(error);
     }
   }

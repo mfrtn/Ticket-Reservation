@@ -4,26 +4,25 @@ import {} from "../interfaces";
 class TicketService {
   constructor() {}
 
-  // updatedPermittedData(userObject: UserI.UserUpdateI) {
-  //   const result = {};
+  updatedPermittedData(ticketObject: Ticket) {
+    const result = {};
 
-  //   const permittedKeyChange = [
-  //     "fname",
-  //     "lname",
-  //     "phone",
-  //     "nationalCode",
-  //     "birthday",
-  //     "password",
-  //     "role",
-  //   ];
+    const permittedKeyChange = [
+      "fromLocation",
+      "toLocation",
+      "arrivalDate",
+      "departureDate",
+      "unitPrice",
+      "stock",
+    ];
 
-  //   for (const key of permittedKeyChange) {
-  //     if (userObject.hasOwnProperty(key)) {
-  //       result[key] = userObject[key];
-  //     }
-  //   }
-  //   return result;
-  // }
+    for (const key of permittedKeyChange) {
+      if (ticketObject.hasOwnProperty(key)) {
+        result[key] = ticketObject[key];
+      }
+    }
+    return result;
+  }
 
   async all(): Promise<Ticket[]> {
     return await db.ticket.findMany({
@@ -44,6 +43,23 @@ class TicketService {
   async create(newTicketObj: Ticket): Promise<Ticket> {
     return await db.ticket.create({
       data: newTicketObj,
+    });
+  }
+
+  async update(id: string, ticketObject: Ticket): Promise<Ticket> {
+    return await db.ticket.update({
+      where: {
+        id,
+      },
+      data: this.updatedPermittedData(ticketObject),
+    });
+  }
+
+  async destroy(id: string): Promise<Ticket> {
+    return await db.ticket.delete({
+      where: {
+        id,
+      },
     });
   }
 }

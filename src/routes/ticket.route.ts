@@ -23,4 +23,17 @@ router.post(
   (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
     ticketController.create(req, res, next)
 );
+router.patch(
+  "/:id",
+  auth.operator,
+  (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
+    ticketController.update(req, res, next)
+);
+router.delete(
+  "/:id",
+  auth.operator,
+  (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
+    ticketController.destroy(req, res, next)
+);
+
 export default router;

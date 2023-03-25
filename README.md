@@ -23,8 +23,8 @@
 - - [x] Get all Tickets
 - - [x] Get a Ticket by ID
 - - [x] Add a new Ticket (operator only)
-- - [ ] Modify a Ticket by ID (operator only)
-- - [ ] Remove a Ticket by ID (operator only)
+- - [x] Modify a Ticket by ID (operator only)
+- - [x] Remove a Ticket by ID (operator only)
 - - [ ] Remove many Tickets by IDs (operator only)
 - - [ ] Create a Query for filtering Tickets(on Redis)
 - - [ ] Get Tickets by Query ID
