@@ -40,6 +40,12 @@ class TicketService {
       },
     });
   }
+
+  async create(newTicketObj: Ticket): Promise<Ticket> {
+    return await db.ticket.create({
+      data: newTicketObj,
+    });
+  }
 }
 
 export default TicketService;

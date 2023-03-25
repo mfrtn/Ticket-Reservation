@@ -17,4 +17,10 @@ router.get(
   (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
     ticketController.index(req, res, next)
 );
+router.post(
+  "/",
+  auth.operator,
+  (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
+    ticketController.create(req, res, next)
+);
 export default router;
