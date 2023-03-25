@@ -17,8 +17,9 @@
 - - [x] Update a User Profile By ID
 - - [x] Upload Avatar
 - [x] **Authorization**
-- - [x] Login API with JWT Token
+- - [x] Authorize Users with Role (Admin, Operator, Client)
 - [x] **Authentication**
+- - [x] Login API with JWT Token
 - [ ] **Ticket CRUD**
 - - [x] Get all Tickets
 - - [x] Get a Ticket by ID
@@ -29,10 +30,16 @@
 - - [x] Create a Query for filtering Tickets(on Redis)
 - - [x] Get Tickets by Query ID
 - - - [ ] Fix No DateTime Query Bug
+- - [ ] Return a HTML Ticket by ID
 - [ ] **Order CRUD**
-- - [ ] Get All User Order By ID
+- - [ ] Get All User Order by ID
+- - [ ] Create an Order
+- - [ ] Modify an Order by ID
+- - [ ] Cancel an Order by ID
+- - [ ] Pay for an Order by ID
 - [ ] **Wallet CRUD**
 - - [x] Increase Wallet Balance
 - - [ ] Get Wallet Balance
 - [x] Refresh Token mechanism API
+- [ ] Global Midlleware for logging?!?
 - [ ] **Routes Request Validations**
