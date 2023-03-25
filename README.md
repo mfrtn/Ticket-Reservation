@@ -25,9 +25,10 @@
 - - [x] Add a new Ticket (operator only)
 - - [x] Modify a Ticket by ID (operator only)
 - - [x] Remove a Ticket by ID (operator only)
-- - [ ] Remove many Tickets by IDs (admin only)
-- - [ ] Create a Query for filtering Tickets(on Redis)
-- - [ ] Get Tickets by Query ID
+- - [x] Remove many Tickets by IDs (admin only)
+- - [x] Create a Query for filtering Tickets(on Redis)
+- - [x] Get Tickets by Query ID
+- - - [ ] Fix No DateTime Query Bug
 - [ ] **Order CRUD**
 - - [ ] Get All User Order By ID
 - [ ] **Wallet CRUD**

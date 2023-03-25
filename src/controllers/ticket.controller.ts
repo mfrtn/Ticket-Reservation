@@ -1,12 +1,38 @@
 import { Response, NextFunction } from "express";
+import { createClient } from "redis";
+
 import { TicketService } from "../services";
-import { AuthI, ErrorI } from "../interfaces";
-import { Ticket } from "@prisma/client";
+import { AuthI, ErrorI, TicketQueryI, Ticket } from "../interfaces";
+import config from "../config";
 
 class TicketController {
+  private redisFiletKeyTimeOut: number;
   private ticketService: TicketService;
+
   constructor(ticketService: TicketService) {
     this.ticketService = ticketService;
+    this.redisFiletKeyTimeOut = config.QUERY_EXPIRE_TIME;
+  }
+
+  private queryPermittedData(queryObject: TicketQueryI) {
+    const result = {};
+
+    const permittedKeyChange = ["from", "to", "arrival", "departure"];
+
+    for (const key of permittedKeyChange) {
+      if (queryObject.hasOwnProperty(key)) {
+        if (key === "arrival" || key === "departure") {
+          result[key] = new Date(queryObject[key]).toDateString();
+          continue;
+        }
+        result[key] = queryObject[key];
+      } else {
+        result[key] = "";
+      }
+    }
+    console.log(result);
+
+    return result;
   }
 
   async index(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
@@ -102,6 +128,74 @@ class TicketController {
     } catch (error) {
       error.code = 400;
       error.message = "Invalid Request!";
+      next(error);
+    }
+  }
+
+  async createQuery(
+    req: AuthI.AuthRequestI,
+    res: Response,
+    next: NextFunction
+  ) {
+    const query: TicketQueryI = this.queryPermittedData(req.query);
+
+    try {
+      const client = createClient();
+      await client.connect();
+
+      if (!(await client.get("queryId"))) {
+        await client.set("queryId", 0);
+      }
+      const queryIdString = (await client.incr("queryId")).toString();
+
+      await client.hSet(queryIdString, [
+        ["from", query.from],
+        ["to", query.to],
+        ["arrival", query.arrival],
+        ["departure", query.departure],
+      ]);
+
+      await client.expire(queryIdString, this.redisFiletKeyTimeOut);
+      await client.disconnect();
+
+      return res.json({
+        queryId: queryIdString,
+        query,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async runQuery(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
+    const queryId: string = req.params.id;
+
+    try {
+      const client = createClient();
+      await client.connect();
+      const filterObject: TicketQueryI = await client.hGetAll(queryId);
+      await client.disconnect();
+
+      if (Object.keys(filterObject).length === 0) {
+        const error: ErrorI = new Error();
+        error.message = "Query Not Found";
+        error.code = 404;
+        return next(error);
+      }
+      if (!Date.parse(filterObject.departure)) {
+        delete filterObject.departure;
+      }
+
+      if (!Date.parse(filterObject.arrival)) {
+        delete filterObject.arrival;
+      }
+
+      const tickets = await this.ticketService.filter(filterObject);
+
+      return res.json({
+        tickets,
+      });
+    } catch (error) {
       next(error);
     }
   }

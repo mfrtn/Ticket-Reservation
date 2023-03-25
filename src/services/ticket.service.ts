@@ -1,5 +1,5 @@
-import { db, Ticket } from "../database";
-import {} from "../interfaces";
+import { db } from "../database";
+import { Ticket, TicketQueryI } from "../interfaces";
 
 class TicketService {
   constructor() {}
@@ -59,6 +59,21 @@ class TicketService {
     return await db.ticket.delete({
       where: {
         id,
+      },
+    });
+  }
+
+  async filter(filterObject: TicketQueryI): Promise<Ticket[]> {
+    return await db.ticket.findMany({
+      where: {
+        arrivalDate: filterObject.arrival,
+        departureDate: filterObject.departure,
+        fromLocation: {
+          contains: filterObject.from,
+        },
+        toLocation: {
+          contains: filterObject.to,
+        },
       },
     });
   }

@@ -41,5 +41,15 @@ router.delete(
   (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
     ticketController.destroyMany(req, res, next)
 );
+router.post(
+  "/query",
+  (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
+    ticketController.createQuery(req, res, next)
+);
+router.get(
+  "/query/:id",
+  (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
+    ticketController.runQuery(req, res, next)
+);
 
 export default router;
