@@ -25,7 +25,7 @@
 - - [x] Add a new Ticket (operator only)
 - - [x] Modify a Ticket by ID (operator only)
 - - [x] Remove a Ticket by ID (operator only)
-- - [ ] Remove many Tickets by IDs (operator only)
+- - [ ] Remove many Tickets by IDs (admin only)
 - - [ ] Create a Query for filtering Tickets(on Redis)
 - - [ ] Get Tickets by Query ID
 - [ ] **Order CRUD**

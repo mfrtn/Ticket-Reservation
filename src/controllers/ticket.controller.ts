@@ -78,6 +78,33 @@ class TicketController {
       next(error);
     }
   }
+
+  async destroyMany(
+    req: AuthI.AuthRequestI,
+    res: Response,
+    next: NextFunction
+  ) {
+    const result = {};
+    const { ids }: { ids: string[] } = req.body;
+
+    try {
+      for (const id of ids) {
+        try {
+          const deletedTicket = await this.ticketService.destroy(id);
+          if (deletedTicket) {
+            result[id] = 1;
+          }
+        } catch (error) {
+          result[id] = 0;
+        }
+      }
+      return res.json(result);
+    } catch (error) {
+      error.code = 400;
+      error.message = "Invalid Request!";
+      next(error);
+    }
+  }
 }
 
 export default TicketController;

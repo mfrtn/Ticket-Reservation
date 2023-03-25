@@ -35,5 +35,11 @@ router.delete(
   (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
     ticketController.destroy(req, res, next)
 );
+router.delete(
+  "/",
+  auth.admin,
+  (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
+    ticketController.destroyMany(req, res, next)
+);
 
 export default router;
