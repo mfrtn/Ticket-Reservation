@@ -16,6 +16,14 @@
 - [x] **Authorization**
 - [x] **Authentication**
 - [ ] **Ticket CRUD**
+- - [x] Get all Tickets
+- - [x] Get a Ticket by ID
+- - [ ] Add a new Ticket
+- - [ ] Modify a Ticket by ID
+- - [ ] Remove a Ticket by ID
+- - [ ] Remove many Tickets by IDs
+- - [ ] Create a Query for filtering Tickets(on Redis)
+- - [ ] Get Tickets by Query ID
 - [ ] **Order CRUD**
 - - [ ] Get All User Order By ID
 - [ ] **Wallet CRUD**

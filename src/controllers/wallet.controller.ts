@@ -36,7 +36,6 @@ class WalletController {
       error.code = 422;
       return next(error);
     } catch (error) {
-      throw error;
       error.code = 400;
       error.message = "Invalid Request!";
       return next(error);
