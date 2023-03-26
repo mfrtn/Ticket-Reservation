@@ -20,44 +20,6 @@ class OrderService {
     });
   }
 
-  async create2(
-    newOrderObj: OrderCreatI,
-    tickets: TicketsOnOrders[]
-  ): Promise<Order> {
-    return await db.order.create({
-      data: {
-        userId: newOrderObj.userId,
-        totalPrice: newOrderObj.totalPrice,
-        description: newOrderObj.description,
-        Tickets: {
-          createMany: {
-            data: tickets,
-          },
-        },
-      },
-    });
-  }
-
-  async update(id: string, orderObject: Order): Promise<Order> {
-    return await db.order.update({
-      where: {
-        id,
-      },
-      data: orderObject,
-    });
-  }
-
-  async changeStatus(id: string, status: Status): Promise<Order> {
-    return await db.order.update({
-      where: {
-        id,
-      },
-      data: {
-        status,
-      },
-    });
-  }
-
   async create(
     newOrderObj: OrderCreatI,
     tickets: TicketsOnOrders[]
@@ -83,12 +45,12 @@ class OrderService {
           );
         }
 
+        // 3. Callculate order totalPrice from each Ticket
         newOrderObj.totalPrice += ticket.count * updatedtTicket.unitPrice;
       }
-      console.log(newOrderObj);
 
-      // 3. Create a Order
-      const order: Order = await db.order.create({
+      // 4. Create an Order
+      return await db.order.create({
         data: {
           userId: newOrderObj.userId,
           totalPrice: newOrderObj.totalPrice,
@@ -100,8 +62,26 @@ class OrderService {
           },
         },
       });
+    });
+  }
 
-      return order;
+  async update(id: string, orderObject: Order): Promise<Order> {
+    return await db.order.update({
+      where: {
+        id,
+      },
+      data: orderObject,
+    });
+  }
+
+  async changeStatus(id: string, status: Status): Promise<Order> {
+    return await db.order.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
     });
   }
 }
