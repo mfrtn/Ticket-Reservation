@@ -22,7 +22,7 @@ class WalletController {
         const fakeVerify = await this.payIRService.fakeVerify(req.user.phone);
         if (fakeVerify.status === 1) {
           //Increase Wallet Balance
-          const transaction = await this.walletService.deposit(
+          const transaction = await this.walletService.transfer(
             req.user.id,
             amount,
             fakeVerify.bankTransId
@@ -46,7 +46,16 @@ class WalletController {
     req: AuthI.AuthRequestI,
     res: Response,
     next: NextFunction
-  ) {}
+  ) {
+    const id: string = req.user.id;
+
+    try {
+      const ballance = await this.walletService.ballance(id);
+      return res.json(ballance);
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 export default WalletController;

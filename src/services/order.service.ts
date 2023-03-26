@@ -127,7 +127,7 @@ class OrderService {
 
       // Update User wallet if Order Status is PAID
       if (order.status === Status.PAID) {
-        const newTransaction = await this.walletService.deposit(
+        const newTransaction = await this.walletService.transfer(
           order.userId,
           order.totalPrice,
           null,
@@ -141,6 +141,37 @@ class OrderService {
         },
         data: {
           status: Status.CANCELLED,
+        },
+      });
+      return updatedOrder;
+    });
+  }
+
+  async payOrder(order: Order): Promise<Order> {
+    return await db.$transaction(async (db): Promise<Order> => {
+      // Check User Wallet
+      const { ballance } = await this.walletService.ballance(order.userId);
+
+      if (ballance < order.totalPrice) {
+        throw new Error(
+          `You Don't have enough ballance in wallet, Increase your wallet ballance first`
+        );
+      }
+      // New Transaction
+      const newTransaction = await this.walletService.transfer(
+        order.userId,
+        -order.totalPrice,
+        null,
+        order.id
+      );
+
+      // Change Order Status
+      const updatedOrder = db.order.update({
+        where: {
+          id: order.id,
+        },
+        data: {
+          status: Status.PAID,
         },
       });
       return updatedOrder;

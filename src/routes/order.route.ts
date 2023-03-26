@@ -39,7 +39,6 @@ router.patch(
 );
 router.patch(
   "/:id/pay",
-  auth.operator,
   (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
     orderController.payment(req, res, next)
 );

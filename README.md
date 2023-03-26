@@ -41,11 +41,10 @@
 - - [x] Auto Cancelling an Order with Cron Job if Client doesn't Pay after a period
 - - [ ] Modify an Order by ID (self or operator)
 - - [x] Cancel an Order by ID (self or operator)
-- - [ ] Pay for an Order by ID
-- [ ] **Wallet CRUD**
+- - [x] Pay for an Order by ID
+- [x] **Wallet CRUD**
 - - [x] Increase Wallet Balance
-- - [ ] Get Wallet Balance (self or operator)
-- - - [ ] Update User Balance
+- - [x] Update Wallet Balance by User ID (self or operator)
 - [x] Refresh Token mechanism API
 - [ ] Global Midlleware for logging?!?
 - [ ] Error generator

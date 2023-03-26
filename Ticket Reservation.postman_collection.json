@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"phone\": \"09121001001\",\n    \"password\": \"password\"\n}",
+							"raw": "{\n    \"phone\": \"09122002003\",\n    \"password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -69,6 +69,49 @@
 								"v1",
 								"auth",
 								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/auth/refresh",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh"
 							]
 						}
 					},
@@ -165,7 +208,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "127.0.0.1:3000/api/v1/user/clfkcub2x0000r537w67jqfss",
+							"raw": "127.0.0.1:3000/api/v1/user/clfk85u2g0002r56emu1pjii2",
 							"host": [
 								"127",
 								"0",
@@ -177,7 +220,7 @@
 								"api",
 								"v1",
 								"user",
-								"clfkcub2x0000r537w67jqfss"
+								"clfk85u2g0002r56emu1pjii2"
 							]
 						}
 					},
@@ -225,7 +268,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{CLIENT3}}",
+									"value": "{{ADMIN}}",
 									"type": "string"
 								}
 							]
@@ -234,7 +277,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"fname\": \"Jeniffer\",\n    \"lname\": \"Doe\",\n    \"phone\": \"09121001003\",\n    \"role\": \"ADMIN\",\n    \"pasda\": \"asdasd\"\n}",
+							"raw": "{\n    \"role\": \"CLIENT\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -242,7 +285,7 @@
 							}
 						},
 						"url": {
-							"raw": "127.0.0.1:3000/api/v1/user/clfk85u2g0002r56emu1pjii2",
+							"raw": "127.0.0.1:3000/api/v1/user/clfl7vvvi0000r590ecanrlo3",
 							"host": [
 								"127",
 								"0",
@@ -254,7 +297,58 @@
 								"api",
 								"v1",
 								"user",
-								"clfk85u2g0002r56emu1pjii2"
+								"clfl7vvvi0000r590ecanrlo3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a User Profile  Avatar By",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/home/mohammad/Documents/300.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/user/upload",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"upload"
 							]
 						}
 					},
@@ -276,7 +370,8 @@
 						"method": "HEAD",
 						"header": [],
 						"url": {
-							"raw": "127.0.0.1:3000/api/v1/user/phone/09121001001",
+							"raw": "http://127.0.0.1:3000/api/v1/user/phone/09121001001",
+							"protocol": "http",
 							"host": [
 								"127",
 								"0",
@@ -290,6 +385,710 @@
 								"user",
 								"phone",
 								"09121001001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Increase Wallet Balance",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CLIENT3}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 125000000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/user/wallet",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"wallet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Wallet Balance by User ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CLIENT4}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/user/wallet/clfk85u2g0002r56emu1pjii2",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"wallet",
+								"clfk85u2g0002r56emu1pjii2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ticket",
+			"item": [
+				{
+					"name": "Get All Tickets",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CLIENT3}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/ticket/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"ticket",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Ticket by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CLIENT3}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/ticket/clfn7hyga0000r5njoagst53k",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"ticket",
+								"clfn7hyga0000r5njoagst53k"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new Ticket",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{OPERATOR}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fromLocation\": \"tehran\",\n    \"toLocation\": \"shiraz\",\n    \"arrivalDate\": \"2023-04-27T13:00:00.000Z\",\n    \"departureDate\": \"2023-04-27T12:00:00.000Z\",\n    \"unitPrice\": 1000000,\n    \"stock\": 95\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/ticket/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"ticket",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify a Ticket by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{OPERATOR}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"arrivalDate\": \"2023-04-28T00:00:00.000Z\",\n    \"departureDate\": \"2023-04-27T12:00:00.000Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/ticket/clfnwezkq0000r5jtrcm0s097",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"ticket",
+								"clfnwezkq0000r5jtrcm0s097"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a Ticket by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{OPERATOR}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/ticket/clfn7io480002r5nj883jai1w",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"ticket",
+								"clfn7io480002r5nj883jai1w"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove  many Tickets by IDs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [\n        \"clfnxd94f0000r5ziodxc9dr0\",\n        \"clfnxdkyz0002r5ziyvr19udu\",\n        \"clfnxdt4r0004r5zidmcxo75h\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/ticket/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"ticket",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Filter Query",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CLIENT3}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/ticket/query?from=tehran&to=shiraz&arrival=2023-04-27T13:00:00.000Z&departure=ads",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"ticket",
+								"query"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "tehran"
+								},
+								{
+									"key": "to",
+									"value": "shiraz"
+								},
+								{
+									"key": "arrival",
+									"value": "2023-04-27T13:00:00.000Z"
+								},
+								{
+									"key": "departure",
+									"value": "ads"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Run a Filter Query by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CLIENT3}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/ticket/query/47",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"ticket",
+								"query",
+								"47"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Get All Orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/order/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Order by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{OPERATOR}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/order/clfn7hyga0000r5njoagst53k",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"clfn7hyga0000r5njoagst53k"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CLIENT3}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tickets\": [\n        {\n            \"ticketId\": \"clfn7hyga0000r5njoagst53k\",\n            \"count\": 10\n        },\n        {\n            \"ticketId\": \"clfnwezkq0000r5jtrcm0s097\",\n            \"count\": 5\n        }\n    ],\n    \"description\" : \"some description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/order/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify an Order by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{OPERATOR}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fromLocation\": \"tehran\",\n    \"toLocation\": \"kish\",\n    \"arrivalDate\": \"2023-02-01T00:00:00.000Z\",\n    \"departureDate\": \"2023-01-01T00:00:00.000Z\",\n    \"unitPrice\": 1500000,\n    \"stock\": 54\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/order/clfn7hyga0000r5njoagst53k",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"clfn7hyga0000r5njoagst53k"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel an Order by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CLIENT3}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/order/clfpx488t0003r5qizojyizna/cancel",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"clfpx488t0003r5qizojyizna",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pay an Order by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CLIENT3}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/order/clfpx488t0003r5qizojyizna/pay",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"clfpx488t0003r5qizojyizna",
+								"pay"
 							]
 						}
 					},
@@ -321,7 +1120,7 @@
 	"variable": [
 		{
 			"key": "ADMIN",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjA5MTIxMDAxMDAxIiwiaWF0IjoxNjc5NTA2NDM2LCJleHAiOjE2ODMxMDY0MzZ9.PyNsgr3Bw0xRybEvHR2iEKmrdraY4q6mC5fRX1PwiDk"
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjA5MTIxMDAxMDAxIiwiaWF0IjoxNjc5Nzc1ODgxLCJleHAiOjE2ODMzNzU4ODF9.pn1lFaYRBjZs5POvczp7Hx7-yixOachK9TYfPaLtYTw"
 		},
 		{
 			"key": "OPERATOR",
@@ -331,6 +1130,11 @@
 		{
 			"key": "CLIENT3",
 			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjA5MTIxMDAxMDAzIiwiaWF0IjoxNjc5NTA2NDkyLCJleHAiOjE2ODMxMDY0OTJ9.ZhaXVk-KEigxqVW4d2sFD1bpopP12_vU_iBmhzbu8rE"
+		},
+		{
+			"key": "CLIENT4",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjA5MTIyMDAyMDAzIiwiaWF0IjoxNjc5ODU0ODI4LCJleHAiOjE2ODM0NTQ4Mjh9.2bM3iTZ2w0BCzJjlpC038FrNa7MM9Ul_CIs4o61nsq0",
+			"type": "string"
 		}
 	]
 }

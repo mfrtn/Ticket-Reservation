@@ -1,7 +1,7 @@
 import { Response, NextFunction } from "express";
 import * as schedule from "node-schedule";
 
-import { OrderService, WalletService } from "../services";
+import { OrderService } from "../services";
 import config from "../config";
 import {
   AuthI,
@@ -20,6 +20,19 @@ class OrderController {
   constructor(orderService: OrderService) {
     this.orderService = orderService;
     this.cancelPeriod = config.ORDER_CANCEL_PERIOD;
+  }
+
+  private checkUserAuthorization(
+    userRole: UserI.Role,
+    userId: string,
+    orderUserId: string
+  ) {
+    if (userRole !== UserI.Role.ADMIN && userRole !== UserI.Role.OPERATOR) {
+      if (userId !== orderUserId) {
+        return false;
+      }
+    }
+    return true;
   }
 
   async index(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
@@ -85,20 +98,17 @@ class OrderController {
     try {
       const order = await this.orderService.find(id);
 
-      // Check User Authorization
-      if (
-        req.user.role !== UserI.Role.ADMIN &&
-        req.user.role !== UserI.Role.OPERATOR
-      ) {
-        if (req.user.id !== order.userId) {
+      if (order) {
+        // Check User Authorization
+        if (
+          !this.checkUserAuthorization(req.user.role, req.user.id, order.userId)
+        ) {
           const error: ErrorI = new Error();
           error.message = "You are not authorized";
           error.code = 401;
           return next(error);
         }
-      }
-      if (order) {
-        //Check Order Status
+
         if (order.status !== Status.CANCELLED) {
           const updatedOrder = await this.orderService.cancelOrder(order);
           return res.json(updatedOrder);
@@ -108,18 +118,52 @@ class OrderController {
           error.code = 400;
           return next(error);
         }
+      } else {
+        const error: ErrorI = new Error();
+        error.message = "Order Not Found";
+        error.code = 404;
+        return next(error);
       }
-      const error: ErrorI = new Error();
-      error.message = "Order Not Found";
-      error.code = 404;
-      return next(error);
     } catch (error) {
       error.code = 500;
       return next(error);
     }
   }
 
-  async payment(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {}
+  async payment(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
+    const id: string = req.params.id;
+    try {
+      const order = await this.orderService.find(id);
+
+      if (order) {
+        // Check User Authorization
+        if (req.user.id !== order.userId) {
+          const error: ErrorI = new Error();
+          error.message = "You are not authorized";
+          error.code = 401;
+          return next(error);
+        }
+
+        if (order.status === Status.RESERVED) {
+          const updatedOrder = await this.orderService.payOrder(order);
+          return res.json(updatedOrder);
+        } else {
+          const error: ErrorI = new Error();
+          error.message = "You can only pay for reserved orders";
+          error.code = 400;
+          return next(error);
+        }
+      } else {
+        const error: ErrorI = new Error();
+        error.message = "Order Not Found";
+        error.code = 404;
+        return next(error);
+      }
+    } catch (error) {
+      error.code = 500;
+      return next(error);
+    }
+  }
 }
 
 export default OrderController;
