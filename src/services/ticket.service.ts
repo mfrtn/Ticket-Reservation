@@ -1,4 +1,4 @@
-import { db } from "../database";
+import { db, Status } from "../database";
 import { Ticket, TicketQueryI, TicketFilterI } from "../interfaces";
 
 class TicketService {
@@ -78,6 +78,24 @@ class TicketService {
         },
       },
     });
+  }
+
+  async checkUserBoughtTicket(userId: string, ticketId: string) {
+    const orders = await db.order.findMany({
+      where: {
+        status: Status.PAID,
+        AND: {
+          userId,
+        },
+        Tickets: {
+          some: {
+            ticketId,
+          },
+        },
+      },
+    });
+
+    return orders.length > 0 ? true : false;
   }
 }
 

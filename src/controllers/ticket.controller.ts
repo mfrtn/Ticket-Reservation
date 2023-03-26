@@ -221,6 +221,31 @@ class TicketController {
       next(error);
     }
   }
+
+  async print(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
+    const ticketId: string = req.params.id;
+    const userId = req.user.id;
+    try {
+      const ticket = await this.ticketService.find(ticketId);
+      if (!ticket) {
+        const error: ErrorI = new Error();
+        error.message = "Not Found";
+        error.code = 404;
+        return next(error);
+      }
+      // Check if this ticket exists in the user's paid orders or not
+      if (!(await this.ticketService.checkUserBoughtTicket(userId, ticketId))) {
+        const error: ErrorI = new Error();
+        error.message = "Not Authorized";
+        error.code = 401;
+        return next(error);
+      }
+
+      return res.end("HTML");
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 export default TicketController;

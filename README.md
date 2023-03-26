@@ -33,6 +33,8 @@
 - - [x] Get Tickets by Query ID
 - - - [x] Fix No DateTime Query Bug
 - - [ ] Return a HTML Ticket by ID
+- - - [x] Extra: Check if this ticket exists in the user's paid orders or not
+- - - [ ] Design and Return Dynamic HTML file
 - [ ] **Order CRUD**
 - - [x] Get All Orders (admin only)
 - - [x] Get an Order by ID (operator only)

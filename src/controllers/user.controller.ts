@@ -124,7 +124,7 @@ class UserController {
   }
 
   async orders(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
-    const id = req.user.id;
+    const id = req.params.id;
 
     try {
       const user = await this.userService.find(id);

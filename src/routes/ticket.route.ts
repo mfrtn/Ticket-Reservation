@@ -51,5 +51,10 @@ router.get(
   (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
     ticketController.runQuery(req, res, next)
 );
+router.get(
+  "/:id/print",
+  (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
+    ticketController.print(req, res, next)
+);
 
 export default router;

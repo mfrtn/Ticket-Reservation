@@ -1,5 +1,5 @@
-import { db, User } from "../database";
-import { UserI } from "../interfaces";
+import { db, Order, User } from "../database";
+import { UserI, Status } from "../interfaces";
 
 class UserService {
   constructor() {}
@@ -77,26 +77,22 @@ class UserService {
     });
   }
 
-  async findOrders(id: string): Promise<User> {
-    return await db.user.findUnique({
+  async findOrders(userId: string): Promise<Order[]> {
+    return await db.order.findMany({
       where: {
-        id,
+        userId,
       },
       include: {
-        Orders: {
-          include: {
-            Tickets: {
+        Tickets: {
+          select: {
+            count: true,
+            Ticket: {
               select: {
-                count: true,
-                Ticket: {
-                  select: {
-                    id: true,
-                    fromLocation: true,
-                    toLocation: true,
-                    arrivalDate: true,
-                    departureDate: true,
-                  },
-                },
+                id: true,
+                fromLocation: true,
+                toLocation: true,
+                arrivalDate: true,
+                departureDate: true,
               },
             },
           },
