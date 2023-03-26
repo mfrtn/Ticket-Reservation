@@ -80,17 +80,25 @@ class TicketController {
   async update(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
     const id: string = req.params.id;
     const inputFileds: Ticket = req.body;
-
-    if (inputFileds.arrivalDate) {
-      inputFileds.arrivalDate = new Date(inputFileds.arrivalDate);
-    }
-    if (inputFileds.departureDate) {
-      inputFileds.departureDate = new Date(inputFileds.departureDate);
-    }
-
     try {
-      const ticket = await this.ticketService.update(id, inputFileds);
-      return res.json(ticket);
+      const ticket = await this.ticketService.find(id);
+
+      if (!ticket) {
+        const error: ErrorI = new Error();
+        error.message = "Invalid Ticket";
+        error.code = 400;
+        return next(error);
+      }
+
+      if (inputFileds.arrivalDate) {
+        inputFileds.arrivalDate = new Date(inputFileds.arrivalDate);
+      }
+      if (inputFileds.departureDate) {
+        inputFileds.departureDate = new Date(inputFileds.departureDate);
+      }
+
+      const updatedTicket = await this.ticketService.update(id, inputFileds);
+      return res.json(updatedTicket);
     } catch (error) {
       error.code = 400;
       next(error);

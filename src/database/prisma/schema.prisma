@@ -54,9 +54,8 @@ model TicketsOnOrders {
 model Order {
   id          String  @id @default(cuid())
   userId      String
-  count       Int
   totalPrice  Float
-  status      Status
+  status      Status  @default(RESERVED)
   description String?
 
   createdAt DateTime @default(now())
