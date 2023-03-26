@@ -61,5 +61,11 @@ router.get(
   (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
     walletController.getBallance(req, res, next)
 );
+router.get(
+  "/:id/order",
+  auth.self,
+  (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
+    userController.orders(req, res, next)
+);
 
 export default router;

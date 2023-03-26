@@ -76,6 +76,34 @@ class UserService {
       },
     });
   }
+
+  async findOrders(id: string): Promise<User> {
+    return await db.user.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        Orders: {
+          include: {
+            Tickets: {
+              select: {
+                count: true,
+                Ticket: {
+                  select: {
+                    id: true,
+                    fromLocation: true,
+                    toLocation: true,
+                    arrivalDate: true,
+                    departureDate: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  }
 }
 
 export default UserService;

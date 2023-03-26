@@ -16,7 +16,7 @@
 - - [x] Delete a User By ID (self or operator)
 - - [x] Update a User Profile By ID (self or operator)
 - - [x] Upload Avatar
-- - [ ] Get All User Order by ID (self or operator)
+- - [x] Get All User's Orders with Tickets by User ID (self or operator)
 - - [ ] User Dao
 - [x] **Authorization**
 - - [x] Authorize Users with Role (Admin, Operator, Client)

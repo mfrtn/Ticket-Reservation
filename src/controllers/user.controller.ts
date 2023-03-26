@@ -122,6 +122,24 @@ class UserController {
       next(error);
     }
   }
+
+  async orders(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
+    const id = req.user.id;
+
+    try {
+      const user = await this.userService.find(id);
+      if (!user) {
+        const error: ErrorI = new Error();
+        error.message = "Not Found";
+        error.code = 404;
+        return next(error);
+      }
+      const userwithOrders = await this.userService.findOrders(id);
+      return res.json(userwithOrders).end();
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 export default UserController;
