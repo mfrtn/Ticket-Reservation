@@ -6,7 +6,7 @@ class Config {
   public APP_NAME: string;
   public PAYIR_TOKEN: string;
   public QUERY_EXPIRE_TIME: number;
-
+  public ORDER_CANCEL_PERIOD: number;
   constructor() {
     this.APP_NAME = process.env.APP_NAME
       ? process.env.APP_NAME
@@ -18,6 +18,9 @@ class Config {
     this.QUERY_EXPIRE_TIME = process.env.QUERY_EXPIRE_TIME
       ? parseInt(process.env.QUERY_EXPIRE_TIME)
       : 300;
+    this.ORDER_CANCEL_PERIOD = process.env.ORDER_CANCEL_PERIOD
+      ? parseInt(process.env.ORDER_CANCEL_PERIOD)
+      : 3600;
   }
 }
 

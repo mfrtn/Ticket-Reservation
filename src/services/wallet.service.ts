@@ -6,13 +6,15 @@ class WalletService {
   async deposit(
     userId: string,
     amount: number,
-    bankTransId: number
+    bankTransId?: number,
+    orderId?: string
   ): Promise<Transaction> {
     return await db.transaction.create({
       data: {
         userId,
         amount,
         bankTransId,
+        orderId,
       },
     });
   }

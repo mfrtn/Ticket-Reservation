@@ -1,9 +1,13 @@
 import { db, Status, TicketsOnOrders } from "../database";
 import { Order, OrderCreatI } from "../interfaces";
+import { WalletService } from "../services";
 
 class OrderService {
-  constructor() {}
+  private walletService: WalletService;
 
+  constructor(walletService: WalletService) {
+    this.walletService = walletService;
+  }
   async all(): Promise<Order[]> {
     return await db.order.findMany({
       orderBy: {
@@ -74,14 +78,72 @@ class OrderService {
     });
   }
 
-  async changeStatus(id: string, status: Status): Promise<Order> {
-    return await db.order.update({
-      where: {
-        id,
-      },
-      data: {
-        status,
-      },
+  async cancelOrder(order: Order): Promise<Order> {
+    return await db.$transaction(async (db): Promise<Order> => {
+      //Get All Tickets of Order
+      const orderWithTickets = await db.order.findUniqueOrThrow({
+        where: {
+          id: order.id,
+        },
+        include: {
+          Tickets: {
+            select: {
+              count: true,
+              Ticket: {
+                select: { id: true, departureDate: true },
+              },
+            },
+          },
+        },
+      });
+
+      const currentTime = new Date();
+
+      // Check that there is at least 30 minutes left on all tickets of this order
+      // Increase each Ticket stock
+      for (const ticket of orderWithTickets.Tickets) {
+        const updatedtTicket = await db.ticket.update({
+          data: {
+            stock: {
+              increment: ticket.count,
+            },
+          },
+          where: {
+            id: ticket.Ticket.id,
+          },
+        });
+
+        // leftTime in Minutes
+        const leftTime: number =
+          (updatedtTicket.departureDate.getTime() - currentTime.getTime()) /
+          6000;
+
+        if (leftTime < 30) {
+          throw new Error(
+            `Ticket with id:<${updatedtTicket.id}> has les than 30 minutes to Departure Time`
+          );
+        }
+      }
+
+      // Update User wallet if Order Status is PAID
+      if (order.status === Status.PAID) {
+        const newTransaction = await this.walletService.deposit(
+          order.userId,
+          order.totalPrice,
+          null,
+          order.id
+        );
+      }
+
+      const updatedOrder = db.order.update({
+        where: {
+          id: order.id,
+        },
+        data: {
+          status: Status.CANCELLED,
+        },
+      });
+      return updatedOrder;
     });
   }
 }

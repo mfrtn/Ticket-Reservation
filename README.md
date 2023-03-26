@@ -37,12 +37,15 @@
 - - [x] Get All Orders (admin only)
 - - [x] Get an Order by ID (operator only)
 - - [x] Create an Order (with dbTranscation)
+- - - [ ] Extra: Check Departure Time of Tickets not arrived yet
+- - [x] Auto Cancelling an Order with Cron Job if Client doesn't Pay after a period
 - - [ ] Modify an Order by ID (self or operator)
-- - [ ] Cancel an Order by ID (self or operator)
+- - [x] Cancel an Order by ID (self or operator)
 - - [ ] Pay for an Order by ID
 - [ ] **Wallet CRUD**
 - - [x] Increase Wallet Balance
 - - [ ] Get Wallet Balance (self or operator)
+- - - [ ] Update User Balance
 - [x] Refresh Token mechanism API
 - [ ] Global Midlleware for logging?!?
 - [ ] Error generator

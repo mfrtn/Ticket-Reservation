@@ -64,7 +64,7 @@ model Order {
   Tickets TicketsOnOrders[]
   User    User              @relation(fields: [userId], references: [id])
 
-  Transaction Transaction?
+  Transaction Transaction[]
 }
 
 model Transaction {
@@ -73,13 +73,14 @@ model Transaction {
   amount      Float
   bankTransId Float?  @unique
   cardNumber  String?
-  orderId     String? @unique
+  orderId     String?
   description String?
 
   createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id])
+  Order     Order?   @relation(fields: [orderId], references: [id])
 
-  User  User   @relation(fields: [userId], references: [id])
-  Order Order? @relation(fields: [orderId], references: [id])
+  @@unique([amount, orderId])
 }
 
 enum Role {

@@ -39,4 +39,4 @@ type UserOutputI = {
 
 interface UserI extends User {}
 
-export { UserCreateI, UserOutputI, UserUpdateI, UserI };
+export { UserCreateI, UserOutputI, UserUpdateI, UserI, Role };

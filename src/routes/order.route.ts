@@ -1,12 +1,14 @@
 import { Router, Response, NextFunction } from "express";
-import { OrderService } from "../services";
+import { OrderService, WalletService } from "../services";
 import { OrderController } from "../controllers";
 import { auth } from "../middlewares";
 import { AuthI } from "../interfaces";
 
 const router = Router();
 
-const orderController = new OrderController(new OrderService());
+const orderController = new OrderController(
+  new OrderService(new WalletService())
+);
 
 router.use(auth.authJWT);
 router.get(
@@ -32,7 +34,6 @@ router.patch(
 );
 router.patch(
   "/:id/cancel",
-  auth.operator,
   (req: AuthI.AuthRequestI, res: Response, next: NextFunction) =>
     orderController.cancel(req, res, next)
 );
