@@ -29,7 +29,6 @@ type UserOutputI = {
   phone: string;
   nationalCode?: string;
   birthday: Date;
-  // password: string;
   avatarUrl?: string;
   role?: Role;
   ballance?: number;

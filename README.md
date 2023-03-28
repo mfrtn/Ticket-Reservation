@@ -17,7 +17,7 @@
 - - [x] Update a User Profile By ID (self or operator)
 - - [x] Upload Avatar
 - - [x] Get All User's Orders with Tickets by User ID (self or operator)
-- - [ ] User Dao
+- - [x] Exclude User Password
 - [x] **Authorization**
 - - [x] Authorize Users with Role (Admin, Operator, Client)
 - [x] **Authentication**

@@ -4,6 +4,7 @@ import * as JWT from "jsonwebtoken";
 import { UserI, AuthI, ErrorI } from "../interfaces";
 import { UserService } from "../services";
 import { Role } from "../database";
+import { exclude } from "../utilities";
 
 const userService = new UserService();
 
@@ -23,10 +24,9 @@ const authJWT = async (
       const phone: string = playload.phone;
 
       const user: UserI.UserOutputI = await userService.findByPhone(phone);
-      // req.user = userDao.userInfoDao(user);
 
       if (user) {
-        req.user = user;
+        req.user = exclude(user, ["password"]);
       } else {
         const error: ErrorI = new Error();
         error.message = "Invalid token";

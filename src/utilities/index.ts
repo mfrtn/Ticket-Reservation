@@ -1,3 +1,4 @@
 import { capitalize } from "./helper";
+import { exclude } from "./prisma";
 
-export { capitalize };
+export { capitalize, exclude };

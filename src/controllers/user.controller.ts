@@ -4,6 +4,7 @@ import { UserService } from "../services";
 import { AuthI, ErrorI, UserI } from "../interfaces";
 import AuthController from "./auth.controller";
 import { Role } from "../database";
+import { exclude } from "../utilities";
 
 class UserController {
   private userService: UserService;
@@ -16,11 +17,12 @@ class UserController {
     try {
       if (id === undefined) {
         const users = await this.userService.all();
+        users.map((user) => exclude(user, ["password"]));
         return res.json(users).end();
       } else {
         const user = await this.userService.find(id);
         if (user) {
-          return res.json(user).end();
+          return res.json(exclude(user, ["password"])).end();
         }
       }
       const error: ErrorI = new Error();
@@ -82,7 +84,7 @@ class UserController {
 
     try {
       const user = await this.userService.update(id, inputFileds);
-      return res.json(user);
+      return res.json(exclude(user, ["password"])).end();
     } catch (error) {
       error.code = 400;
       error.message = "Invalid Request!";
