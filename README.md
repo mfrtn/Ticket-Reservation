@@ -48,6 +48,8 @@
 - - [x] Increase Wallet Balance
 - - [x] Update Wallet Balance by User ID (self or operator)
 - [x] Refresh Token mechanism API
-- [ ] Global Midlleware for logging?!?
+- [ ] Global Midlleware for logging
+- - [x] Log on Console
+- - [ ] Append to file
 - [ ] Error generator
 - [ ] **Routes Request Validations**

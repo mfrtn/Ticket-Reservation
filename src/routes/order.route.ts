@@ -1,7 +1,7 @@
 import { Router, Response, NextFunction } from "express";
 import { OrderService, WalletService } from "../services";
 import { OrderController } from "../controllers";
-import { auth } from "../middlewares";
+import { auth, logAccess } from "../middlewares";
 import { AuthI } from "../interfaces";
 
 const router = Router();
@@ -10,7 +10,7 @@ const orderController = new OrderController(
   new OrderService(new WalletService())
 );
 
-router.use(auth.authJWT);
+router.use(auth.authJWT, logAccess);
 router.get(
   "/",
   auth.admin,

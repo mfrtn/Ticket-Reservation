@@ -2,7 +2,7 @@ import * as express from "express";
 
 import config from "../config";
 import apiRouter from "../routes";
-import { errorHandler } from "../middlewares";
+import { errorHandler, logRequest } from "../middlewares";
 
 const router = express.Router();
 
@@ -12,13 +12,13 @@ class ExpressLoader {
   constructor() {
     this.app = express();
     this.app.use(express.json());
-
     // this.app.use("/api", router);
 
     apiRouter(this.app);
 
     this.app.use(errorHandler);
 
+    this.app.use(logRequest);
     this.app.use(this.pathNotFound);
   }
 

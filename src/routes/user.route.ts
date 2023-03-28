@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import * as multer from "multer";
 import { UserService, PayIRService, WalletService } from "../services";
 import { UserController, WalletController } from "../controllers";
-import { auth } from "../middlewares";
+import { auth, logAccess } from "../middlewares";
 import { AuthI } from "../interfaces";
 
 const router = Router();
@@ -14,7 +14,7 @@ const walletController = new WalletController(
   new WalletService()
 );
 
-router.use(auth.authJWT);
+router.use(auth.authJWT, logAccess);
 router.get(
   "/",
   auth.admin,
