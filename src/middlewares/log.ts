@@ -1,22 +1,25 @@
 import { Response, NextFunction, Request } from "express";
-import * as fs from "fs";
 
 import { AuthI } from "../interfaces";
+import { accessLogger } from "../utilities";
 
-const logAccess = async (
+function logger(req: AuthI.AuthRequestI): string {
+  let log = req.user ? `User:   ${req.user.id}\n` : "";
+  log += `Route:  ${req.baseUrl + req.url}
+Method: ${req.method}
+Agent:  ${req.headers["user-agent"]}
+IP:     ${req.socket.remoteAddress}
+Time:   ${new Date()}
+-----------------------------------\n`;
+  return log;
+}
+
+const logAccess = (
   req: AuthI.AuthRequestI,
   res: Response,
   next: NextFunction
 ) => {
-  const user = req.user;
-  console.log(
-    `User:  ${user.id}
-Route:  ${req.baseUrl + req.url}
-Agent:  ${req.headers["user-agent"]}
-IP:     ${req.socket.remoteAddress}
-Time:   ${new Date()}`
-  );
-
+  accessLogger(logger(req));
   next();
 };
 
@@ -25,15 +28,7 @@ const logRequest = (
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.user) {
-    console.log(
-      `Route:  ${req.baseUrl + req.url}
-Agent:  ${req.headers["user-agent"]}
-IP:     ${req.socket.remoteAddress}
-Time:   ${new Date()}`
-    );
-  }
-
+  accessLogger(logger(req));
   next();
 };
 

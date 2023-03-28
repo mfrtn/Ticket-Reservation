@@ -8,7 +8,7 @@
 
 #### **TODO**
 
-- [ ] **User CRUD**
+- [x] **User CRUD**
 - - [x] Create a new User
 - - [x] Get all Users (admin only)
 - - [x] Get a User Profile by ID (self or operator)
@@ -48,8 +48,8 @@
 - - [x] Increase Wallet Balance
 - - [x] Update Wallet Balance by User ID (self or operator)
 - [x] Refresh Token mechanism API
-- [ ] Global Midlleware for logging
+- [x] Global Midlleware for logging
 - - [x] Log on Console
-- - [ ] Append to file
+- - [x] Append to file
 - [ ] Error generator
 - [ ] **Routes Request Validations**

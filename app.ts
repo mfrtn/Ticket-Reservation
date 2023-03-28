@@ -3,6 +3,7 @@ import { db } from "./src/database";
 
 global.__basedir = process.cwd() + "/public/images/";
 global.__viewdir = process.cwd() + "/public/view/";
+global.__logdir = process.cwd() + "/logs/";
 
 async function connectionCheck(): Promise<void> {
   await db.$connect();

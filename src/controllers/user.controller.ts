@@ -98,6 +98,9 @@ class UserController {
       if (file) {
         if (file.mimetype.includes("image")) {
           try {
+            if (!fs.existsSync(global.__basedir)) {
+              fs.mkdirSync(global.__basedir);
+            }
             fs.unlinkSync(global.__basedir + req.user.avatarUrl);
           } catch (error) {}
 
