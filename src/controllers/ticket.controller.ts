@@ -250,7 +250,15 @@ class TicketController {
         if (err) {
           return next(err);
         } else {
+          const publicView =
+            req.protocol + "://" + req.get("host") + "/public/view/";
+
           const document = parse(html);
+
+          let stylecss = document.getElementById("stylecss");
+          const cssfile = stylecss.getAttribute("href");
+
+          stylecss.setAttribute("href", publicView + cssfile);
 
           document.getElementById("clientName").innerHTML =
             req.user.fname + " " + req.user.lname;
