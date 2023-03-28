@@ -2,6 +2,7 @@ import { ExpressLoader } from "./src/loaders";
 import { db } from "./src/database";
 
 global.__basedir = process.cwd() + "/public/images/";
+global.__viewdir = process.cwd() + "/public/view/";
 
 async function connectionCheck(): Promise<void> {
   await db.$connect();

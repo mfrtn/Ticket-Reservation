@@ -8,7 +8,7 @@
 
 #### **TODO**
 
-- [x] **User CRUD**
+- [ ] **User CRUD**
 - - [x] Create a new User
 - - [x] Get all Users (admin only)
 - - [x] Get a User Profile by ID (self or operator)
@@ -22,7 +22,7 @@
 - - [x] Authorize Users with Role (Admin, Operator, Client)
 - [x] **Authentication**
 - - [x] Login API with JWT Token
-- [ ] **Ticket CRUD**
+- [x] **Ticket CRUD**
 - - [x] Get all Tickets
 - - [x] Get a Ticket by ID
 - - [x] Add a new Ticket (operator only)
@@ -32,9 +32,9 @@
 - - [x] Create a Query for filtering Tickets (on Redis)
 - - [x] Get Tickets by Query ID
 - - - [x] Fix No DateTime Query Bug
-- - [ ] Return a HTML Ticket by ID
+- - [x] Return a HTML Ticket by ID
 - - - [x] Extra: Check if this ticket exists in the user's paid orders or not
-- - - [ ] Design and Return Dynamic HTML file
+- - - [x] Design and Return Dynamic HTML file
 - [ ] **Order CRUD**
 - - [x] Get All Orders (admin only)
 - - [x] Get an Order by ID (operator only)

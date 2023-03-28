@@ -1,5 +1,7 @@
 import { Response, NextFunction } from "express";
 import { createClient } from "redis";
+import { parse } from "node-html-parser";
+import * as fs from "fs";
 
 import { TicketService } from "../services";
 import {
@@ -10,6 +12,7 @@ import {
   TicketFilterI,
 } from "../interfaces";
 import config from "../config";
+import { capitalize } from "../utilities";
 
 class TicketController {
   private redisFiletKeyTimeOut: number;
@@ -241,7 +244,37 @@ class TicketController {
         return next(error);
       }
 
-      return res.end("HTML");
+      const htmlPath: string = global.__viewdir + "ticket.html";
+
+      fs.readFile(htmlPath, (err, html: any) => {
+        if (err) {
+          return next(err);
+        } else {
+          const document = parse(html);
+
+          document.getElementById("clientName").innerHTML =
+            req.user.fname + " " + req.user.lname;
+
+          document.getElementById("cName").innerHTML =
+            req.user.fname.slice(0, 3) + "," + req.user.lname;
+
+          document.getElementById("fromLocation").innerHTML = capitalize(
+            ticket.fromLocation
+          );
+          document.getElementById("toLocation").innerHTML = capitalize(
+            ticket.toLocation
+          );
+          document.getElementById("time").innerHTML = ticket.departureDate
+            .toString()
+            .slice(0, -33);
+          document.getElementById("atime").innerHTML = ticket.arrivalDate
+            .toString()
+            .slice(0, -33);
+          document.getElementById("code").innerHTML = ticket.id;
+
+          return res.end(document.toString());
+        }
+      });
     } catch (error) {
       return next(error);
     }
