@@ -277,7 +277,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"role\": \"CLIENT\"\n}",
+							"raw": "{\n    \"fname\": \"foooooo\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -441,6 +441,54 @@
 					"response": []
 				},
 				{
+					"name": "Get a User Orders by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CLIENT3}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/user/clfk85u2g0002r56emu1pjii2/order",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"clfk85u2g0002r56emu1pjii2",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update Wallet Balance by User ID",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -451,7 +499,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{CLIENT4}}",
+									"value": "{{CLIENT3}}",
 									"type": "string"
 								}
 							]
@@ -640,7 +688,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"arrivalDate\": \"2023-04-28T00:00:00.000Z\",\n    \"departureDate\": \"2023-04-27T12:00:00.000Z\"\n}",
+							"raw": "{\n    \"arrivalDate\": \"2023-04-28T12:30:00.000Z\",\n    \"departureDate\": \"2023-04-28T10:25:00.000Z\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -648,7 +696,7 @@
 							}
 						},
 						"url": {
-							"raw": "127.0.0.1:3000/api/v1/ticket/clfnwezkq0000r5jtrcm0s097",
+							"raw": "127.0.0.1:3000/api/v1/ticket/clfn7hyga0000r5njoagst53k",
 							"host": [
 								"127",
 								"0",
@@ -660,7 +708,7 @@
 								"api",
 								"v1",
 								"ticket",
-								"clfnwezkq0000r5jtrcm0s097"
+								"clfn7hyga0000r5njoagst53k"
 							]
 						}
 					},
@@ -833,6 +881,60 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Print a Ticket by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CLIENT3}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/ticket/clfn7hyga0000r5njoagst53k/print",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"ticket",
+								"clfn7hyga0000r5njoagst53k",
+								"print"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -980,7 +1082,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"fromLocation\": \"tehran\",\n    \"toLocation\": \"kish\",\n    \"arrivalDate\": \"2023-02-01T00:00:00.000Z\",\n    \"departureDate\": \"2023-01-01T00:00:00.000Z\",\n    \"unitPrice\": 1500000,\n    \"stock\": 54\n}",
+							"raw": "{\n    \"tickets\": [\n        {\n            \"ticketId\": \"clfn7hyga0000r5njoagst53k\",\n            \"count\": 10\n        },\n        {\n            \"ticketId\": \"clfnwezkq0000r5jtrcm0s097\",\n            \"count\": 5\n        }\n    ],\n    \"description\" : \"some description\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -988,7 +1090,7 @@
 							}
 						},
 						"url": {
-							"raw": "127.0.0.1:3000/api/v1/order/clfn7hyga0000r5njoagst53k",
+							"raw": "127.0.0.1:3000/api/v1/order/clfsjmcoq0002r534spbmnlsr",
 							"host": [
 								"127",
 								"0",
@@ -1000,7 +1102,7 @@
 								"api",
 								"v1",
 								"order",
-								"clfn7hyga0000r5njoagst53k"
+								"clfsjmcoq0002r534spbmnlsr"
 							]
 						}
 					},
