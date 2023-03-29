@@ -41,7 +41,7 @@
 - - [x] Create an Order (with dbTranscation)
 - - - [ ] Extra: Check Departure Time of Tickets not arrived yet
 - - [x] Auto Cancelling an Order with Cron Job if Client doesn't Pay after a period
-- - [ ] Modify an Order by ID (self or operator)
+- - [x] Modify an Order by ID (operator only)
 - - [x] Cancel an Order by ID (self or operator)
 - - [x] Pay for an Order by ID
 - [x] **Wallet CRUD**

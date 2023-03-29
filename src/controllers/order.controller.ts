@@ -91,7 +91,42 @@ class OrderController {
     }
   }
 
-  async update(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {}
+  async update(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
+    const orderId = req.params.id;
+    const order = await this.orderService.find(orderId);
+
+    if (!order) {
+      const error: ErrorI = new Error();
+      error.message = "Order Not Found";
+      error.code = 404;
+      return next(error);
+    }
+
+    if (order.status !== Status.RESERVED) {
+      const error: ErrorI = new Error();
+      error.message = "You just can modify Order with Reserved Status";
+      error.code = 400;
+      return next(error);
+    }
+
+    const {
+      tickets,
+      description,
+    }: { tickets: TicketsOnOrders[]; description: string } = req.body;
+
+    try {
+      const updatedOrder = await this.orderService.update(
+        order,
+        description,
+        tickets
+      );
+
+      return res.json(updatedOrder).end();
+    } catch (error) {
+      error.code = 400;
+      next(error);
+    }
+  }
 
   async cancel(req: AuthI.AuthRequestI, res: Response, next: NextFunction) {
     const id: string = req.params.id;

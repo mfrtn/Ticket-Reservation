@@ -69,12 +69,142 @@ class OrderService {
     });
   }
 
-  async update(id: string, orderObject: Order): Promise<Order> {
-    return await db.order.update({
-      where: {
-        id,
-      },
-      data: orderObject,
+  async update(
+    order: Order,
+    description: string,
+    tickets: TicketsOnOrders[]
+  ): Promise<Order> {
+    return await db.$transaction(async (db): Promise<Order> => {
+      const currentTime = new Date();
+      for (const ticket of tickets) {
+        /*
+         * Get previous ticket count on this order (oldCount)
+         */
+        const oldTicketOnOrders = await db.ticketsOnOrders.findUnique({
+          where: {
+            ticketId_orderId: {
+              orderId: order.id,
+              ticketId: ticket.ticketId,
+            },
+          },
+        });
+        /*
+         * Check Ticket exists on this order or not
+         */
+        if (!oldTicketOnOrders) {
+          if (ticket.count <= 0) {
+            continue;
+          }
+          /*
+           * Ticket does not include in this order we should add the ticket
+           */
+          await db.ticketsOnOrders.create({
+            data: {
+              orderId: order.id,
+              ticketId: ticket.ticketId,
+              count: ticket.count,
+            },
+          });
+        }
+
+        const oldCount = oldTicketOnOrders ? oldTicketOnOrders.count : 0;
+        /*
+         * Update stock for each ticket.
+         */
+        if (ticket.count <= 0) {
+          await db.ticketsOnOrders.delete({
+            where: {
+              ticketId_orderId: {
+                ticketId: ticket.ticketId,
+                orderId: order.id,
+              },
+            },
+          });
+        } else if (oldTicketOnOrders) {
+          await db.ticketsOnOrders.update({
+            where: {
+              ticketId_orderId: {
+                ticketId: ticket.ticketId,
+                orderId: order.id,
+              },
+            },
+            data: {
+              count: ticket.count,
+            },
+          });
+        }
+        /*
+         * Calculate Diffrence between oldCount and newCount
+         */
+        const diff = oldCount - ticket.count;
+        const updatedtTicket = await db.ticket.update({
+          data: {
+            stock: {
+              increment: diff,
+            },
+          },
+          where: {
+            id: ticket.ticketId,
+          },
+        });
+        /*
+         * Verify that each ticket has engough stock to reserve by Client.
+         */
+        if (updatedtTicket.stock < 0) {
+          throw new Error(
+            `Ticket with id:<${ticket.ticketId}> doesn't have enough stock to sell ${ticket.count} units`
+          );
+        }
+        // left time in Minutes
+        const leftTime: number =
+          (updatedtTicket.departureDate.getTime() - currentTime.getTime()) /
+          6000;
+        /*
+         * Verify that each ticket has at least 30 mintues to departue time.
+         */
+        if (leftTime < 30) {
+          throw new Error(
+            `Ticket with id:<${updatedtTicket.id}> has les than 30 minutes to Departure Time`
+          );
+        }
+      }
+
+      // find all tickets on this order
+      const allTicketsOnOder = await db.ticket.findMany({
+        select: {
+          unitPrice: true,
+          Orders: {
+            select: {
+              count: true,
+            },
+          },
+        },
+        where: {
+          Orders: {
+            some: {
+              orderId: order.id,
+            },
+          },
+        },
+      });
+
+      // Callculate order new totalPrice from each Ticket
+      const totalPrice = allTicketsOnOder.reduce(
+        (preVal, curVall) =>
+          preVal + curVall.unitPrice * curVall.Orders[0].count,
+        0
+      );
+
+      // Update an Order
+      return await db.order.update({
+        where: {
+          id: order.id,
+        },
+        data: {
+          totalPrice: totalPrice,
+          description: description,
+        },
+      });
     });
   }
 
