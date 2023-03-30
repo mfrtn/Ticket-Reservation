@@ -35,11 +35,11 @@
 - - [x] Return a HTML Ticket by ID
 - - - [x] Extra: Check if this ticket exists in the user's paid orders or not
 - - - [x] Design and Return Dynamic HTML file
-- [ ] **Order CRUD**
+- [x] **Order CRUD**
 - - [x] Get All Orders (admin only)
 - - [x] Get an Order by ID (operator only)
 - - [x] Create an Order (with dbTranscation)
-- - - [ ] Extra: Check Departure Time of Tickets not arrived yet
+- - - [x] Extra: Check Departure Time of Tickets not arrived yet
 - - [x] Auto Cancelling an Order with Cron Job if Client doesn't Pay after a period
 - - [x] Modify an Order by ID (operator only)
 - - [x] Cancel an Order by ID (self or operator)

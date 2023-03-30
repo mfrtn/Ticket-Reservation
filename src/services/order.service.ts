@@ -1,13 +1,25 @@
+import config from "../config";
 import { db, Status, TicketsOnOrders } from "../database";
 import { Order, OrderCreatI } from "../interfaces";
 import { WalletService } from "../services";
 
 class OrderService {
   private walletService: WalletService;
+  protected specifiedTime: number;
 
   constructor(walletService: WalletService) {
     this.walletService = walletService;
+    this.specifiedTime = config.TICKET_REMAINING_TIME;
   }
+
+  protected leftTime(departueDate: Date): number {
+    /*
+     * calculate left time in second
+     */
+    const currentTime = new Date();
+    return (departueDate.getTime() - currentTime.getTime()) / 1000;
+  }
+
   async all(): Promise<Order[]> {
     return await db.order.findMany({
       orderBy: {
@@ -49,11 +61,18 @@ class OrderService {
           );
         }
 
-        // 3. Callculate order totalPrice from each Ticket
+        // 3. Check Departure Time of Tickets not arrived yet
+        if (new Date() >= updatedtTicket.departureDate) {
+          throw new Error(
+            `Ticket with id:<${updatedtTicket.id}> Departure Time Has Arrived`
+          );
+        }
+
+        // 4. Callculate order totalPrice from each Ticket
         newOrderObj.totalPrice += ticket.count * updatedtTicket.unitPrice;
       }
 
-      // 4. Create an Order
+      // 5. Create an Order
       return await db.order.create({
         data: {
           userId: newOrderObj.userId,
@@ -75,7 +94,6 @@ class OrderService {
     tickets: TicketsOnOrders[]
   ): Promise<Order> {
     return await db.$transaction(async (db): Promise<Order> => {
-      const currentTime = new Date();
       for (const ticket of tickets) {
         /*
          * Get previous ticket count on this order (oldCount)
@@ -98,6 +116,15 @@ class OrderService {
           /*
            * Ticket does not include in this order we should add the ticket
            */
+          if (
+            !(await db.ticket.findUnique({
+              where: {
+                id: ticket.ticketId,
+              },
+            }))
+          )
+            continue;
+
           await db.ticketsOnOrders.create({
             data: {
               orderId: order.id,
@@ -155,16 +182,16 @@ class OrderService {
             `Ticket with id:<${ticket.ticketId}> doesn't have enough stock to sell ${ticket.count} units`
           );
         }
-        // left time in Minutes
-        const leftTime: number =
-          (updatedtTicket.departureDate.getTime() - currentTime.getTime()) /
-          6000;
+        // left time in seconds
+        const leftTime: number = this.leftTime(updatedtTicket.departureDate);
         /*
-         * Verify that each ticket has at least 30 mintues to departue time.
+         * Verify that each ticket has at least specefied time(in seconds)to departue time.
          */
-        if (leftTime < 30) {
+        if (leftTime < this.specifiedTime) {
           throw new Error(
-            `Ticket with id:<${updatedtTicket.id}> has les than 30 minutes to Departure Time`
+            `Ticket with id:<${updatedtTicket.id}> has les than ${
+              this.specifiedTime / 60
+            } minutes to Departure Time`
           );
         }
       }
@@ -227,9 +254,6 @@ class OrderService {
         },
       });
 
-      const currentTime = new Date();
-
-      // Check that there is at least 30 minutes left on all tickets of this order
       // Increase each Ticket stock
       for (const ticket of orderWithTickets.Tickets) {
         const updatedtTicket = await db.ticket.update({
@@ -243,14 +267,14 @@ class OrderService {
           },
         });
 
-        // leftTime in Minutes
-        const leftTime: number =
-          (updatedtTicket.departureDate.getTime() - currentTime.getTime()) /
-          6000;
+        // leftTime in seconds
+        const leftTime: number = this.leftTime(updatedtTicket.departureDate);
 
-        if (leftTime < 30) {
+        if (leftTime < this.specifiedTime) {
           throw new Error(
-            `Ticket with id:<${updatedtTicket.id}> has les than 30 minutes to Departure Time`
+            `Ticket with id:<${updatedtTicket.id}> has les than ${
+              this.specifiedTime / 60
+            } minutes to Departure Time`
           );
         }
       }

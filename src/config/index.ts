@@ -7,6 +7,8 @@ class Config {
   public PAYIR_TOKEN: string;
   public QUERY_EXPIRE_TIME: number;
   public ORDER_CANCEL_PERIOD: number;
+  public TICKET_REMAINING_TIME: number;
+
   constructor() {
     this.APP_NAME = process.env.APP_NAME
       ? process.env.APP_NAME
@@ -20,6 +22,9 @@ class Config {
       : 300;
     this.ORDER_CANCEL_PERIOD = process.env.ORDER_CANCEL_PERIOD
       ? parseInt(process.env.ORDER_CANCEL_PERIOD)
+      : 3600;
+    this.TICKET_REMAINING_TIME = process.env.TICKET_REMAINING_TIME
+      ? parseInt(process.env.TICKET_REMAINING_TIME)
       : 3600;
   }
 }
