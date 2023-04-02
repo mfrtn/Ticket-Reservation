@@ -95,8 +95,3 @@ enum Status {
   CANCELLED
   RESERVED
 }
-
-// User [1] <-> [Many] Transaction 
-// User [1] <-> [Many] Order 
-// Ticket [Many] <- [1] (TicketsOnOrders) [1] -> [Many] Order
-// Order? [1] <-> [1] Transaction? 

@@ -50,10 +50,9 @@ CREATE TABLE "TicketsOnOrders" (
 CREATE TABLE "Order" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "count" INTEGER NOT NULL,
     "totalPrice" DOUBLE PRECISION NOT NULL,
-    "status" "Status" NOT NULL,
-    "description" TEXT NOT NULL,
+    "status" "Status" NOT NULL DEFAULT 'RESERVED',
+    "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -65,9 +64,10 @@ CREATE TABLE "Transaction" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
+    "bankTransId" DOUBLE PRECISION,
     "cardNumber" TEXT,
     "orderId" TEXT,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
@@ -77,7 +77,10 @@ CREATE TABLE "Transaction" (
 CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Transaction_orderId_key" ON "Transaction"("orderId");
+CREATE UNIQUE INDEX "Transaction_bankTransId_key" ON "Transaction"("bankTransId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Transaction_amount_orderId_key" ON "Transaction"("amount", "orderId");
 
 -- AddForeignKey
 ALTER TABLE "TicketsOnOrders" ADD CONSTRAINT "TicketsOnOrders_ticketId_fkey" FOREIGN KEY ("ticketId") REFERENCES "Ticket"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
