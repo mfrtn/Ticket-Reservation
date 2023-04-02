@@ -4,7 +4,7 @@ import config from "../config";
 import apiRouter from "../routes";
 import { errorHandler, logRequest } from "../middlewares";
 
-const router = express.Router();
+// const router = express.Router();
 
 class ExpressLoader {
   public app: express.Express;
@@ -12,7 +12,9 @@ class ExpressLoader {
   constructor() {
     this.app = express();
     this.app.use(express.json());
-    // this.app.use("/api", router);
+
+    // this.app.use("api/v1", router);
+    // apiRouter(router);
 
     apiRouter(this.app);
 
@@ -35,7 +37,7 @@ class ExpressLoader {
   run(): void {
     this.app.listen(config.PORT, () => {
       console.log(
-        `${config.APP_NAME} app server is running on port ${config.PORT}`
+        `${config.APP_NAME} app server is running on port ${config.PORT} in ${config.NODE_ENV} environment`
       );
     });
   }
